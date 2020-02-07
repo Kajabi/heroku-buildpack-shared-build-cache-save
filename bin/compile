@@ -13,6 +13,6 @@ AWS_ACCESS_KEY=$(cat $ENV_DIR/AWS_ACCESS_KEY)
 AWS_SECRET_KEY=$(cat $ENV_DIR/AWS_SECRET_KEY)
 SHARED_BUILD_CACHE_S3_BUCKET=$(cat $ENV_DIR/SHARED_BUILD_CACHE_S3_BUCKET)
 
-./s3sync -sk $AWS_ACCESS_KEY -ss $AWS_SECRET_KEY $BUILD_DIR/public/assets "s3://$($SHARED_BUILD_CACHE_S3_BUCKET)/public/assets"
-./s3sync -sk $AWS_ACCESS_KEY -ss $AWS_SECRET_KEY $BUILD_DIR/tmp/cache/assets "s3://$($SHARED_BUILD_CACHE_S3_BUCKET)/tmp/cache/assets"
-./s3sync -sk $AWS_ACCESS_KEY -ss $AWS_SECRET_KEY $BUILD_DIR/vendor/bundle "s3://$($SHARED_BUILD_CACHE_S3_BUCKET)/vendor/bundle"
+./s3sync -sk $AWS_ACCESS_KEY -ss $AWS_SECRET_KEY $BUILD_DIR/public/assets "s3://$SHARED_BUILD_CACHE_S3_BUCKET/public/assets"
+./s3sync -sk $AWS_ACCESS_KEY -ss $AWS_SECRET_KEY $BUILD_DIR/tmp/cache/assets "s3://$SHARED_BUILD_CACHE_S3_BUCKET/tmp/cache/assets"
+./s3sync -sk $AWS_ACCESS_KEY -ss $AWS_SECRET_KEY $BUILD_DIR/vendor/bundle "s3://$SHARED_BUILD_CACHE_S3_BUCKET/vendor/bundle"
