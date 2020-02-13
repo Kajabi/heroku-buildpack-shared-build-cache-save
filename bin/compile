@@ -2,6 +2,7 @@
 # bin/compile <build-dir> <cache-dir> <env-dir>
 
 set -eo pipefail
+set -x
 
 BUILD_DIR=$1
 CACHE_DIR=$2
@@ -12,6 +13,8 @@ RCLONE_DIST=rclone-current-linux-amd64
 curl -O https://downloads.rclone.org/$RCLONE_DIST.zip
 unzip -a $RCLONE_DIST.zip
 PATH="$PWD/$RCLONE_DIST:$PATH"
+
+RCLONE_BINARY=$RCLONE_DIST/rclone
 
 echo "Running .heroku/build-cache-save.sh" | sed 's/^/-----> /'
 source $BUILD_DIR/.heroku/build-cache-save.sh
