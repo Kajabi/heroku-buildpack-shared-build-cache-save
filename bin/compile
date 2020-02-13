@@ -8,11 +8,12 @@ BUILD_DIR=$1
 CACHE_DIR=$2
 ENV_DIR=$3
 
-echo "Downloading rclone binary and inserting into \$PATH" | sed 's/^/-----> /'
+echo "-----> Downloading rclone binary and inserting into \$PATH"
 RCLONE_DIST=rclone-current-linux-amd64
 curl -O https://downloads.rclone.org/$RCLONE_DIST.zip
-unzip $RCLONE_DIST.zip -d $CACHE_DIR
-PATH="$CACHE_DIR/$RCLONE_DIST:$PATH"
+mkdir $CACHE_DIR/rclone
+unzip -j $RCLONE_DIST.zip -d $CACHE_DIR/rclone
+PATH="$CACHE_DIR/rclone:$PATH"
 
-echo "Running .heroku/build-cache-save.sh" | sed 's/^/-----> /'
+echo "-----> Running .heroku/build-cache-save.sh"
 source $BUILD_DIR/.heroku/build-cache-save.sh
