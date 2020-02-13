@@ -3,16 +3,17 @@
 
 set -eo pipefail
 
-curl -L https://github.com/larrabee/s3sync/releases/download/2.14/s3sync_2.14_Linux_x86_64.tar.gz > s3sync.tar.gz
-tar xfvs s3sync.tar.gz
-
 BUILD_DIR=$1
+CACHE_DIR=$2
 ENV_DIR=$3
 
-AWS_ACCESS_KEY=$(cat $ENV_DIR/AWS_ACCESS_KEY)
-AWS_SECRET_KEY=$(cat $ENV_DIR/AWS_SECRET_KEY)
-SHARED_BUILD_CACHE_S3_BUCKET=$(cat $ENV_DIR/SHARED_BUILD_CACHE_S3_BUCKET)
+BUILDPACK_DIR="$(dirname $(dirname "$0"))"
 
-./s3sync -sk $AWS_ACCESS_KEY -ss $AWS_SECRET_KEY $BUILD_DIR/public/assets "s3://$SHARED_BUILD_CACHE_S3_BUCKET/public/assets/"
-./s3sync -sk $AWS_ACCESS_KEY -ss $AWS_SECRET_KEY $BUILD_DIR/tmp/cache/assets "s3://$SHARED_BUILD_CACHE_S3_BUCKET/tmp/cache/assets/"
-./s3sync -sk $AWS_ACCESS_KEY -ss $AWS_SECRET_KEY $BUILD_DIR/vendor/bundle "s3://$SHARED_BUILD_CACHE_S3_BUCKET/vendor/bundle/"
+echo "Downloading rclone binary and inserting into \$PATH" | sed 's/^/-----> /'
+RCLONE_DIST=rclone-current-linux-amd64
+curl -O https://downloads.rclone.org/$RCLONE_DIST.zip
+unzip -a $RCLONE_DIST.zip
+export PATH="$BUILDPACK_DIR/$RCLONE_DIST:$PATH"
+
+echo "Running .heroku/build-cache-save.sh" | sed 's/^/-----> /'
+source $BUILD_DIR/.heroku/build-cache-save.sh
