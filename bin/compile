@@ -7,6 +7,13 @@ BUILD_DIR=$1
 CACHE_DIR=$2
 ENV_DIR=$3
 
+USER_SCRIPT=.heroku/build-cache-save.sh
+
+if [[ ! -f "$BUILD_DIR/$USER_SCRIPT" ]]; then
+  echo "-----> $USER_SCRIPT not present; skipping"
+  exit 0
+fi
+
 RCLONE_DIST=rclone-current-linux-amd64
 RCLONE_DIR=$CACHE_DIR/rclone
 
@@ -22,5 +29,5 @@ fi
 
 PATH="$RCLONE_DIR:$PATH"
 
-echo "-----> Running .heroku/build-cache-save.sh"
-source $BUILD_DIR/.heroku/build-cache-save.sh
+echo "-----> Running $USER_SCRIPT"
+source $BUILD_DIR/$USER_SCRIPT
